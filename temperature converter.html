@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Temperature Converter</title>
+    <style>
+		body {
+            background-image: url("https://media.istockphoto.com/id/1217507110/photo/hot-summer-or-heat-wave-background.jpg?s=612x612&w=0&k=20&c=JeNJBv26e0O1sTMPynNuxA9IjVmHC7fYa_qwh7XMLCA=");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .container {
+            position: absolute;
+            top:30;
+            left: 0;
+			width:300px;
+            height:200px; 
+        }
+        
+        .box {
+            width: 600px;
+            height: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: flex;
+        }
+        
+        .input-section {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+			color:white;
+            justify-content: center;
+            align-items: baseline;
+        }
+        
+        .output-section {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #1431c44d;
+        }
+        
+        .input-section label {
+            margin-bottom: 10px;
+        }
+        
+        .input-section input {
+            width: 200px;
+            padding: 5px;
+            font-size: 16px;
+        }
+        
+        .input-section select {
+            width: 200px;
+            padding: 5px;
+            font-size: 16px;
+        }
+        
+        .output-section p {
+		    color:white;
+            font-size: 18px;
+        }
+        
+        .output-section .error-message {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="color:white;">Temperature Converter</h1>
+    <div class="container">
+        <div class="box">
+            <div class="input-section">
+                <label for="inputValue">Enter Temperature:</label>
+                <input id="inputValue" placeholder="Enter temperature value">
+                <label for="inputType">Select Input Type:</label>
+             <select id="inputType">
+               <option value="celsius">Celsius</option>
+               <option value="kelvin">Kelvin</option>
+               <option value="fahrenheit">Fahrenheit</option>
+			  </select>
+                <br>
+                <label for="convertIn">Convert In:</label>
+                <select id="convertIn">
+                    <option value="celsius">Celsius</option>
+                    <option value="kelvin">Kelvin</option>
+                    <option value="fahrenheit">Fahrenheit</option>
+                </select>
+                <br>
+                <button onclick="convertTemperature()">Convert</button>
+            </div>
+        
+            <div class="output-section">
+                <p id="result"></p>
+            </div>
+        </div>
+    </div>
+    <script>
+    function convertTemperature() {
+        var inputValue = document.getElementById("inputValue");
+        var inputType = document.getElementById("inputType");
+        var convertIn = document.getElementById("convertIn");
+        var resultElement = document.getElementById("result");
+
+        var degreeValue = inputValue.value.trim();
+        var inputTypeValue = inputType.value;
+        var convertInValue = convertIn.value;
+
+        if (degreeValue === "") {
+            resultElement.textContent = "Invalid input. Please enter a temperature value.";
+            resultElement.className = "error-message";
+        } else if (!/^\d+(\.\d+)?$/.test(degreeValue)) {
+            resultElement.textContent = "Invalid input. Please enter a valid number.";
+            resultElement.className = "error-message";
+        } else {
+            degreeValue = parseFloat(degreeValue);
+            var convertedValue;
+
+            if (inputTypeValue === "celsius") {
+                if (convertInValue === "celsius") {
+                    convertedValue = degreeValue;
+                } else if (convertInValue === "kelvin") {
+                    convertedValue = degreeValue + 273.15;
+                } else if (convertInValue === "fahrenheit") {
+                    convertedValue = (degreeValue * 9 / 5) + 32;
+                }
+            } else if (inputTypeValue === "kelvin") {
+                if (convertInValue === "celsius") {
+                    convertedValue = degreeValue - 273.15;
+                } else if (convertInValue === "kelvin") {
+                    convertedValue = degreeValue;
+                } else if (convertInValue === "fahrenheit") {
+                    convertedValue = (degreeValue - 273.15) * 9 / 5 + 32;
+                }
+            } else if (inputTypeValue === "fahrenheit") {
+                if (convertInValue === "celsius") {
+                    convertedValue = (degreeValue - 32) * 5 / 9;
+                } else if (convertInValue === "kelvin") {
+                    convertedValue = (degreeValue - 32) * 5 / 9 + 273.15;
+                } else if (convertInValue === "fahrenheit") {
+                    convertedValue = degreeValue;
+                }
+            }
+
+            resultElement.textContent = "Converted value: " + convertedValue.toFixed(2) + " " + convertInValue.charAt(0).toUpperCase() + convertInValue.slice(1);
+            resultElement.className = "";
+        }
+    }
+</script>
+</body>
+</html>
